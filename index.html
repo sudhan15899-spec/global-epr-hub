@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global EPR Hub - US UK JP EU IN</title>
+<style>
+body{font-family:Inter,system-ui;background:#f8fafc;margin:0;padding:0}
+header{background:#0f172a;color:white;padding:40px 20px;text-align:center}
+header h1{margin:0;font-size:32px}
+header p{opacity:0.8;margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;padding:30px;max-width:1100px;margin:auto}
+.card{background:white;border-radius:16px;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,0.06);border-left:5px solid #0f172a}
+.card.us{border-color:#3b82f6} .card.uk{border-color:#ef4444} .card.jp{border-color:#ec4899} .card.eu{border-color:#10b981} .card.in{border-color:#f59e0b}
+.card h3{margin:0 0 8px 0}
+.badge{display:inline-block;background:#eef2ff;padding:4px 10px;border-radius:20px;font-size:12px;margin-bottom:10px}
+.chat{max-width:700px;margin:20px auto;background:white;border-radius:16px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+.chat input{width:100%;padding:14px;border-radius:10px;border:1px solid #e2e8f0}
+.chat button{background:#0f172a;color:white;padding:12px 20px;border-radius:10px;border:none;margin-top:10px;width:100%;cursor:pointer}
+</style>
+</head>
+<body>
+<header>
+<h1>🌍 Global EPR Hub</h1>
+<p>Compare EPR compliance across US, UK, Japan, EU & India - with AI Agent</p>
+</header>
+
+<div class="grid">
+<div class="card us"><span class="badge">US - California SB54</span><h3>USA</h3><p>PRO registration, 25% source reduction by 2032, CalRecycle reporting.</p></div>
+<div class="card uk"><span class="badge">UK - Packaging EPR</span><h3>UK</h3><p>PackUK, modulated fees, RAM assessment, data reporting to DEFRA.</p></div>
+<div class="card jp"><span class="badge">JP - Containers Act</span><h3>Japan</h3><p>JCPRA fees, 3R obligations, sorting by municipalities.</p></div>
+<div class="card eu"><span class="badge">EU - PPWR</span><h3>EU</h3><p>EU-wide DRS, 65% recycling by 2025, ePR via national PROs.</p></div>
+<div class="card in"><span class="badge">IN - Plastic Waste Rules</span><h3>India</h3><p>CPCB EPR portal, PIBO registration, annual targets.</p></div>
+</div>
+
+<div class="chat">
+<h3>🤖 EPR Agent - Ask Anything</h3>
+<p style="font-size:14px;color:#64748b">Ex: "Compare US vs UK fees" or "Japan EPR for PET bottles"</p>
+<input id="q" placeholder="Ask your EPR question..." />
+<button onclick="ask()">Ask Agent</button>
+<div id="ans" style="margin-top:15px;background:#f1f5f9;padding:15px;border-radius:10px;display:none"></div>
+</div>
+
+<script>
+async function ask(){
+ const q=document.getElementById('q').value;
+ if(!q) return;
+ document.getElementById('ans').style.display='block';
+ document.getElementById('ans').innerText='Thinking...';
+ try{
+   const res=await fetch('/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})});
+   const data=await res.json();
+   document.getElementById('ans').innerText=data.answer||'No response';
+ }catch(e){
+   document.getElementById('ans').innerText='Demo mode: For "'+q+'" -> US requires PRO registration via CAA, UK via PackUK with RAM, JP via JCPRA. Check full logic in agent.';
+ }
+}
+</script>
+</body>
+</html>
